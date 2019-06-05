@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import Button from '@material-ui/core/Button'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import SignInSnack from './SignInSnack'
 import TrezorConnect from 'trezor-connect'
 import api from '../../helpers/api'
+import { SignInSnack } from '../shared/Snacks'
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -19,7 +19,7 @@ TrezorConnect.manifest({
 export default function ({ onLogin }) {
   const classes = useStyles()
 
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     snackMessage: '',
     isSnackOpen: false
   })

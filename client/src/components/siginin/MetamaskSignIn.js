@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from 'react'
 import Button from '@material-ui/core/Button'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import SignInSnack from './SignInSnack'
 import api from '../../helpers/api'
+import { SignInSnack } from '../shared/Snacks'
 
 const useStyles = makeStyles(theme => ({
   button: {

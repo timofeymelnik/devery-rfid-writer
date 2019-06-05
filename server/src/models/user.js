@@ -9,7 +9,8 @@ class User {
   save (pbkey) {
     const newUser = {
       pbkey,
-      _id: uuid()
+      _id: uuid(),
+      forms: []
     }
 
     this.users

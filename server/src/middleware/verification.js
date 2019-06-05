@@ -25,7 +25,7 @@ export const verifyJWT = (req, res, next) => {
     if (!user) return res.sendError(UNAUTHORIZED)
 
     req.user = user
-    res.setHeader('Authorization', _issueToken({ _id }))
+    res.setHeader('Authorization', _issueToken(payload))
 
     next()
   } catch (e) {

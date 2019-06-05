@@ -23,7 +23,7 @@ const _sendSuccess = (res, status = 200) => {
 
 export const sendSuccessMiddleware = (req, res, next) => {
   res.sendSuccess = (data, status) => {
-    return _sendSuccess(res, status)(data)
+    return _sendSuccess(res, status)({data})
   }
   next()
 }

@@ -5,6 +5,7 @@ import { sendErrorMiddleware } from '../middleware/sendError'
 import { sendSuccessMiddleware } from '../middleware/sendSuccess'
 import accountRoutes from '../api/account.routes'
 import deveryRoutes from '../api/devery.routes'
+import formsRoutes from '../api/forms.routes'
 
 const logger = createLogger('Bootstrap')
 
@@ -17,6 +18,7 @@ export function API() {
 
   api.use('/accounts', accountRoutes)
   api.use('/devery', deveryRoutes)
+  api.use('/forms', formsRoutes)
 
   return api
 }

@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import OriginSelect from './OriginSelect'
 import api from '../../helpers/api'
-import SignInSnack from '../siginin/SignInSnack'
+import { SignInSnack } from '../shared/Snacks'
 
 const useStyles = makeStyles(theme => ({
   '@global': {
