@@ -1,36 +1,23 @@
-import React, { Fragment, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Dialog from '@material-ui/core/Dialog'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import { useDataApi } from '../../helpers/api'
-import Composer from './Composer'
+import React from 'react'
+import Route from '../shared/Route'
 import { useStateValue } from '../app/AppContext'
+import findIndex from 'lodash/findIndex'
+import Items from '../items/Items'
+import EditForm from '../composer/EditForm'
 
-const useStyles = makeStyles(theme => ({
-  progress: {
-    margin: theme.spacing(2),
-  },
-}))
+export default function ({ history, match }) {
+  const { params: { formId, tab } } = match
 
-export default function Forms (props) {
-  const classes = useStyles()
-  const [isOpen, setIsOpen] = useState(true)
   const [{ forms }] = useStateValue()
-  const [{ data, isLoading, isError }] = useDataApi('/api/forms', forms)
+  const formIndex = findIndex(forms, { _id: formId })
+  const { approved } = forms[formIndex]
 
-  function handleClose () {
-    setIsOpen(false)
+  if (approved) {
+    if (tab !== 'items') history.push(`/forms/${formId}/items`)
+    return (
+      <Route path={`/forms/:formId/items`} component={Items} />
+    )
   }
 
-  return (
-    <Fragment>
-      {isLoading && (
-        <Dialog fullScreen open={isOpen} onClose={handleClose}>
-          <CircularProgress className={classes.progress} />
-        </Dialog>
-      )}
-      {isError && <div>Something went wrong ...</div>}
-      {!isError && !isLoading && data.length && <Composer data={data} {...props} />}
-    </Fragment>
-  )
+  return <Route path={`/forms/:formId/edit`} component={EditForm} />
 }

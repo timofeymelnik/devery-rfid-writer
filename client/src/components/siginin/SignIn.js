@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Avatar from '@material-ui/core/Avatar/index'
 import CssBaseline from '@material-ui/core/CssBaseline/index'
 import Paper from '@material-ui/core/Paper/index'
@@ -10,6 +10,8 @@ import bg from '../../assets/praticle-orb.png'
 import TrezorSignIn from './TrezorSignIn'
 import MetamaskSignIn from './MetamaskSignIn'
 import auth from '../../helpers/auth'
+import api from '../../helpers/api'
+import devery, { utils } from '../../helpers/deveryHelper'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,12 +38,29 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function Component ({ history }) {
+export default function ({ history }) {
   const classes = useStyles()
+
+  console.log(auth.decodeToken())
 
   if (auth.loggedIn() && !auth.isSigned()) onLogin()
 
-  function onLogin () {
+  async function onLogin (pbkey) {
+    // let address
+    //
+    // const appAddress = await api.get('api/devery')
+    //
+    // if (appAddress) {
+    //   address = appAddress
+    // } else {
+    //   address = pbkey
+    // }
+    //
+    // await api.post('api/devery', { address })
+    //
+    // await devery.addApp('Devery RFID composer', address, 0,)
+    // await devery.permissionMarker(appAddress, true)
+
     history.push('/signup')
   }
 

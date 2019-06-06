@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
+import size from 'lodash/size'
 
-const useValidation = (values, callback, rules) => {
+const useValidation = (values, cb, rules) => {
   const [errors, setErrors] = useState({})
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
-    console.log('validate', isReady, Object.keys(errors).length)
+      if (!(size(Object.keys(errors)) === 0 && isReady)) return
 
-    if (Object.keys(errors).length === 0 && isReady) {
-      callback(true)
-    }
-  }, [values, errors, isReady])
+      cb(true)
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [errors, isReady]
+  )
 
   const handleChange = () => {
     if (!isReady) setIsReady(true)

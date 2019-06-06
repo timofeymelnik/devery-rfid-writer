@@ -1,6 +1,8 @@
-export const updateObjectInArray = (array, j, cb) => {
-  return array.map((item, i) => {
-    if (i !== j) return item
-    return cb(item)
-  })
+import _set from 'lodash/set'
+import cloneDeep from 'lodash/cloneDeep'
+
+export const set = (key, value, state) => {
+  const temp = cloneDeep(state)
+  _set(temp, key, value)
+  return temp
 }

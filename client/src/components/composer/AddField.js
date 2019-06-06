@@ -6,41 +6,48 @@ import OutlinedInput from '@material-ui/core/OutlinedInput'
 import Select from '@material-ui/core/Select'
 import FormControl from '@material-ui/core/FormControl'
 import Paper from '@material-ui/core/Paper'
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Button from '@material-ui/core/Button'
+import DeleteIcon from '@material-ui/icons/Delete'
 import { makeStyles } from '@material-ui/core'
-import { types } from './FieldReducer'
+import { types } from './OptionsTypes'
 import Options from './Options'
 import { useStateValue } from '../app/AppContext'
 import useValidation from '../../helpers/useValidation'
 import rules from './FieldsValidationRules'
+import get from 'lodash/get'
 
 const useStyles = makeStyles(theme => ({
   textField: {
     margin: theme.spacing(1, 0),
   },
-  paper: {
+  paper: ({ isFieldValid }) => ({
+    overflow: 'hidden',
+    border: `1px solid ${isFieldValid ? 'transparent' : theme.palette.secondary.main}`,
     padding: theme.spacing(2, 2),
     margin: theme.spacing(2, 0),
-  },
+  }),
   formControl: {
     width: '100%'
   },
   select: {
     marginBottom: theme.spacing(1),
   },
+  deleteButton: {
+    float: 'right',
+    marginTop: theme.spacing(1),
+  },
 }))
 
-export default function ({ index, isFieldValid }) {
-  const classes = useStyles()
+export default function ({ formIndex, fieldIndex, setIsValidField, isFieldValid }) {
+  const classes = useStyles({ isFieldValid })
 
-  const [{ fields }, dispatch] = useStateValue()
-  const field = fields[index]
+  const [{ forms }, dispatch] = useStateValue()
+  const field = get(forms, [formIndex, 'fields', fieldIndex])
 
   const [labelWidth, setLabelWidth] = useState(0)
   const inputLabel = useRef(null)
 
-  const { errors, handleChange } = useValidation(field, isFieldValid, rules)
+  const { errors, handleChange } = useValidation(field, setIsValidField, rules)
 
   useEffect(() => {
     setLabelWidth(inputLabel.current.offsetWidth)
@@ -48,16 +55,34 @@ export default function ({ index, isFieldValid }) {
 
   function handleSelectType (e) {
     const { target: { value: type } } = e
-    dispatch({ type: 'fields@set_type', payload: { index, type } })
+    dispatch({
+      type: 'fields@set_type',
+      payload: { formIndex, fieldIndex, data: types[type] }
+    })
   }
 
   function handleUpdateName (e) {
     const { target: { value: name } } = e
-    dispatch({ type: 'fields@set_name', payload: { index, name } })
+    dispatch({
+      type: 'fields@update_field',
+      payload: { formIndex, fieldIndex, data: { name } }
+    })
   }
 
-  function handleIsRequired (e, isRequired) {
-    dispatch({ type: 'fields@update_options', payload: { index, isRequired } })
+  function updateOptions (payload) {
+    dispatch({
+      type: 'fields@update_options',
+      payload: { formIndex, fieldIndex, data: payload }
+    })
+  }
+
+  function handleRemoveField () {
+    dispatch({
+      type: 'fields@remove',
+      payload: { formIndex, fieldIndex }
+    })
+
+    setIsValidField(undefined)
   }
 
   return (
@@ -90,22 +115,27 @@ export default function ({ index, isFieldValid }) {
             <em>Not Selected</em>
           </MenuItem>
 
-          {Object.keys(types).map(type => <MenuItem key={type} value={type}>{types[type].label}</MenuItem>)}
+          {Object.keys(types).map(type =>
+            <MenuItem key={type} value={type}>{types[type].label}</MenuItem>
+          )}
         </Select>
       </FormControl>
 
-      <Options errors={errors} index={index} />
+      <Options
+        field={field}
+        errors={errors}
+        updateOptions={updateOptions} />
 
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={field.field.options.isRequired}
-            onChange={handleIsRequired}
-            color="primary"
-          />
-        }
-        label="Is required"
-      />
+      <Button
+        size="small"
+        type="button"
+        variant="contained"
+        color="secondary"
+        className={classes.deleteButton}
+        onClick={handleRemoveField}
+      >
+        <DeleteIcon />
+      </Button>
     </Paper>
   )
 }

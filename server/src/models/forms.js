@@ -26,6 +26,25 @@ class Form {
       .filter(form => form.userId === userId)
       .value()
   }
+
+  findOne (options = {}) {
+    return this.forms
+      .find(options)
+      .value()
+  }
+
+  findById (formId) {
+    return this.forms
+      .find({ _id: formId })
+      .value()
+  }
+
+  updateOne (formId, data) {
+    return this.forms
+      .find({ _id: formId })
+      .assign(data)
+      .write()
+  }
 }
 
 export default new Form()

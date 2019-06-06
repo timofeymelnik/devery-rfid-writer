@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function SignIn ({ history }) {
+export default function ({ history }) {
   const classes = useStyles()
 
   const [snackState, setSnackState] = useState({
@@ -56,7 +56,7 @@ export default function SignIn ({ history }) {
     e.preventDefault()
 
     try {
-      const { error, success } = await api.post('/api/accounts/register', {
+      const { error, success } = await api.put('/api/accounts', {
         origin,
         firstName,
         lastName,

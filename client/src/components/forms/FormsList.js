@@ -5,14 +5,14 @@ import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
+import LockIcon from '@material-ui/icons/Lock'
 import { makeStyles } from '@material-ui/core/styles'
-import api from '../../helpers/api'
-import FormDialog from './NewForm'
 import { useStateValue } from '../app/AppContext'
+import AddProduct from '../shared/AddProduct'
 
 export const drawerWidth = 240
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
@@ -23,35 +23,13 @@ const useStyles = makeStyles(() => ({
   drawerPaper: {
     width: drawerWidth,
   },
+  toolbar: theme.mixins.toolbar,
 }))
 
 export default function ({ handleSelectForm }) {
   const classes = useStyles()
+  const [{ forms }] = useStateValue()
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [{ forms }, dispatch] = useStateValue()
-
-  if (forms.length < 1) return null
-
-  const handleClose = value => async event => {
-    const name = value.trim()
-    if (!!name) {
-      const { success, data } = await api.post('/api/forms/new', { name })
-
-      if (!success) return
-
-      dispatch({type: 'forms@add', payload: { data }})
-
-      setIsModalOpen(false)
-    }
-
-    if (forms.length < 1) {
-      event.preventDefault()
-
-      return
-    }
-
-    setIsModalOpen(false)
-  }
 
   return (
     <Fragment>
@@ -63,20 +41,21 @@ export default function ({ handleSelectForm }) {
         }}
         anchor="left"
       >
+        <div className={classes.toolbar} />
         <Button color='primary' size="large" onClick={() => setIsModalOpen(true)}>
-          Create form
+          Add Product
         </Button>
         <Divider />
         <List>
-          {forms.map(({ name, _id } = {}, index) => (
-            <ListItem button key={`${name}_${index}`} onClick={handleSelectForm(_id)} >
-              <ListItemText primary={name}/>
+          {forms.map(({ name, _id, approved } = {}, index) => (
+            <ListItem button key={`${name}_${index}`} onClick={handleSelectForm(_id, approved ? 'item' : 'edit')} >
+              <ListItemText primary={name}/> {approved && <LockIcon color="action" />}
             </ListItem>
           ))}
         </List>
       </Drawer>
 
-      <FormDialog isOpen={isModalOpen} handleClose={handleClose} />
+      <AddProduct isOpen={isModalOpen} onClose={setIsModalOpen} />
     </Fragment>
   )
 }

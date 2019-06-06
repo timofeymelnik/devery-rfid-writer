@@ -1,10 +1,24 @@
 import { Router } from 'express'
-import { getApps, getAppByAddress } from '../controllers/devery.controller'
+import { encode, getAppInfo, saveAppInfo } from '../controllers/devery.controller'
+import { verifyJWT } from '../middleware/verification'
 
 const router = new Router()
 
-router.route('/').get(getApps)
+router.get(
+  '/rfid/:hash',
+  encode
+)
 
-router.route('/:address').get(getAppByAddress)
+router.get(
+  '/',
+  verifyJWT,
+  getAppInfo
+)
+
+router.post(
+  '/',
+  verifyJWT,
+  saveAppInfo
+)
 
 export default router

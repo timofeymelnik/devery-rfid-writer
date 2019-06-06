@@ -42,19 +42,22 @@ const dataFetchReducer = (state, { type, payload }) => {
       return {
         ...state,
         isLoading: true,
-        isError: false
+        isError: false,
+        isLoaded: false,
       }
     case 'FETCH_SUCCESS':
       return {
         ...state,
         isLoading: false,
         isError: false,
+        isLoaded: true,
         data: payload,
       }
     case 'FETCH_FAILURE':
       return {
         ...state,
         isLoading: false,
+        isLoaded: true,
         isError: true,
       }
     default:
@@ -67,6 +70,7 @@ export const useDataApi = (initialUrl, initialData) => {
   const [state, dispatch] = useReducer(dataFetchReducer, {
     isLoading: false,
     isError: false,
+    isLoaded: false,
     data: initialData,
   })
 

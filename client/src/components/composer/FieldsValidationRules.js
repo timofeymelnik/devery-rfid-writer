@@ -1,4 +1,4 @@
-export default function validate (values) {
+export default function (values) {
   let errors = {}
 
   if (!values.name) {

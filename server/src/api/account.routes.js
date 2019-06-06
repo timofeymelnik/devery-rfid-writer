@@ -22,21 +22,15 @@ const router = new Router()
  * @apiError INTERNAL_ERROR
  */
 router.post(
-  '/signup',
+  '/',
   validate([
     checkBody(['pbkey'], WRONG_REQUEST).exists(),
   ]),
-  (req, res) => {
-    const token = createAccount(req.body.pbkey)
-
-    res.setHeader('Authorization', token)
-
-    res.sendSuccess()
-  }
+  createAccount
 )
 
-router.post(
-  '/register',
+router.put(
+  '/',
   validate([
     checkBody(['firstName', 'lastName', 'origin', 'brandName'], WRONG_REQUEST)
       .exists()
@@ -44,13 +38,7 @@ router.post(
       .isEmpty()
   ]),
   verifyJWT,
-  (req, res) => {
-    const token = updateAccount(req.user, req.body)
-
-    res.setHeader('Authorization', token)
-
-    res.sendSuccess()
-  }
+  updateAccount
 )
 
 export default router

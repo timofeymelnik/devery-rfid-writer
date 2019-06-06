@@ -135,7 +135,7 @@ function IntegrationDownshift({onChange}) {
 
             <div {...getMenuProps()}>
               {isOpen ? (
-                <Paper className={classes.paper} square>
+                <Paper className={classes.paper}>
                   {getSuggestions(inputValue, { showEmpty: true }).map((suggestion, index) =>
                     renderSuggestion({
                       suggestion,

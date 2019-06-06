@@ -1,15 +1,17 @@
-import { createLogger } from '../services/logger'
 import { Router } from 'express'
-// import { debugRequestMiddleware } from '../middleware/debugRequest'
+import { createLogger } from '../services/logger'
 import { sendErrorMiddleware } from '../middleware/sendError'
 import { sendSuccessMiddleware } from '../middleware/sendSuccess'
 import accountRoutes from '../api/account.routes'
-import deveryRoutes from '../api/devery.routes'
 import formsRoutes from '../api/forms.routes'
+import itemsRoutes from '../api/items.routes'
+import deveryRoutes from '../api/devery.routes'
+
+// import { debugRequestMiddleware } from '../middleware/debugRequest'
 
 const logger = createLogger('Bootstrap')
 
-export function API() {
+export function API () {
   const api = Router()
 
   // api.use(debugRequestMiddleware)
@@ -17,13 +19,15 @@ export function API() {
   api.use(sendSuccessMiddleware)
 
   api.use('/accounts', accountRoutes)
-  api.use('/devery', deveryRoutes)
   api.use('/forms', formsRoutes)
+  api.use('/items', itemsRoutes)
+  api.use('/devery', deveryRoutes)
 
   return api
 }
 
-export default function(app) {
+export default function (app) {
   app.use(process.env.API_PREFIX ? process.env.API_PREFIX : '', API())
-  /***/ logger.info('API attached')
+  /***/
+  logger.info('API attached')
 }

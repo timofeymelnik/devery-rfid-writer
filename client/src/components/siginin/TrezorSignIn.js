@@ -32,11 +32,14 @@ export default function ({ onLogin }) {
       challengeVisual: 'Login to',
     })
 
-    if (success) {
-      try {
-        await api.post('/api/accounts/signup', { pbkey: success.publicKey })
 
-        onLogin()
+    if (success) {
+      const pbkey = success.publicKey
+
+      try {
+        await api.post('/api/accounts', { pbkey })
+
+        onLogin(pbkey)
       } catch (e) {
         setState({ snackMessage: e })
       }

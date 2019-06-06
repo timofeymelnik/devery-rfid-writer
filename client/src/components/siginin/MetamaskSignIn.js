@@ -33,9 +33,10 @@ export default function ({ onLogin }) {
     const yyyy = today.getFullYear()
 
     try {
-      await api.post('/api/accounts/signup', { pbkey: `${mm}/${dd}/${yyyy}` })
+      const pbkey = `${mm}/${dd}/${yyyy}`
+      await api.post('/api/accounts', { pbkey })
 
-      onLogin()
+      onLogin(pbkey)
     } catch (e) {
       setState({ isSnackOpen: true, snackMessage: e })
     }

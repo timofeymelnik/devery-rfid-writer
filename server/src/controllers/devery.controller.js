@@ -1,16 +1,23 @@
-import devery from '../services/devery'
+import ndef from 'ndef'
+import App from '../models/app'
+import { NOT_FOUND } from '../constants/errors'
 
-export const getApps = (req, res) => {
-  return devery
-    .getApps()
-    .then(apps => res.sendSuccess(apps))
-    .catch(err => res.sendError(err))
+export function encode (req, res) {
+  res.send(ndef.encodeMessage([
+    ndef.textRecord(req.params.hash)
+  ]))
 }
 
-export const getAppByAddress = (req, res) => {
-  const { address } = req.params
-  return devery
-    .getAppByAddress(address)
-    .then(app => res.sendSuccess(app))
-    .catch(err => res.sendError(err))
+export function getAppInfo (req, res) {
+  const address = App.getAll()
+
+  if (!address) res.sendError(NOT_FOUND)
+
+  res.sendSuccess(address)
+}
+
+export function saveAppInfo (req, res) {
+  App.save(req.body.address)
+
+  res.sendSuccess()
 }

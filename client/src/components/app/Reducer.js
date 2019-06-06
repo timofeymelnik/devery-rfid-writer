@@ -1,12 +1,12 @@
-import { reducer as fieldReducer, initialState as fieldsInitialState } from '../editForm/FieldReducer'
-import { reducer as formsReducer, initialState as formsInitialState } from '../forms/FormReducer'
+import { reducer as formsReducer } from '../forms/FormReducer'
+import { reducer as itemsReducer } from '../items/ItemsReducer'
 
-export default ({fields, forms}, action) => ({
-  fields: fieldReducer(fields, action),
+export default ({ forms, items }, action) => ({
   forms: formsReducer(forms, action),
+  items: itemsReducer(items, action)
 })
 
 export const initialState = {
-  fields: fieldsInitialState,
-  forms: formsInitialState,
+  forms: [],
+  items: []
 }

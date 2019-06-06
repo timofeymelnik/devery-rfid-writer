@@ -1,13 +1,13 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
-import DateFnsUtils from '@date-io/date-fns';
+import DateFnsUtils from '@date-io/date-fns'
 
 import Route from '../shared/Route'
 import NoMatch from '../shared/RouteNotMatch'
 import SignInSide from '../siginin/SignIn'
 import SignUp from '../signup/SignUp'
-import Forms from '../forms/Forms'
+import Forms from '../forms/FormsLoader'
 import { StateProvider } from './AppContext'
 import reducer, { initialState } from './Reducer'
 

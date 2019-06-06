@@ -7,6 +7,14 @@ class User {
   }
 
   save (pbkey) {
+    const existingUser = this.findOne({ pbkey })
+
+    if (existingUser) return {
+      isExisting: true,
+      isNew: false,
+      ...existingUser
+    }
+
     const newUser = {
       pbkey,
       _id: uuid(),
@@ -17,7 +25,11 @@ class User {
       .push(newUser)
       .write()
 
-    return newUser
+    return {
+      isExisting: true,
+      isNew: false,
+      ...newUser
+    }
   }
 
   findOne (options = {}) {
