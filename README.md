@@ -36,13 +36,13 @@ A modern react technologies allow integrating app's parts with any other softwar
 
 Warehouse received a party of various flowers from the flowers supplier and aims to customize the form for writing information on flowers it's going to temporarly store.
 The form below shows an example of form  for specific needs:
-Flower name - string
-Country of origin : dropdown menu
-Package type - string
-Flowers/package - integer
-Date of  receipt - calendar
-Date of sending - calendar
-Temperature of storing - integer
+- Flower name - string
+- Country of origin : dropdown menu
+- Package type - string
+- Flowers/package - integer
+- Date of  receipt - calendar
+- Date of sending - calendar
+- Temperature of storing - integer
 
 ##### For the future the app can be extended with:
 Login with existing hard wallets;
