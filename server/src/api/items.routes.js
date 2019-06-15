@@ -11,7 +11,7 @@ router.post(
 )
 
 router.get(
-  '/',
+  '/:formId',
   verifyJWT,
   getItems
 )

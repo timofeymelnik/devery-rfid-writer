@@ -27,7 +27,7 @@ export function updateAccount (req, res) {
     origin,
     firstName,
     lastName,
-    brandName
+    appName
   } = req.body
   const { _id } = req.user
 
@@ -35,9 +35,13 @@ export function updateAccount (req, res) {
     origin,
     firstName,
     lastName,
-    brandName
+    appName
   })
 
   res.setHeader('Authorization', _issueToken({ _id, pbkey, signed: true }))
   res.sendSuccess()
+}
+
+export function getAccountData (req, res) {
+  res.sendSuccess(User.findById(req.user._id))
 }

@@ -1,45 +1,52 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Button from '@material-ui/core/Button'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import api from '../../helpers/api'
 import { SignInSnack } from '../shared/Snacks'
+import { useWeb3Context } from 'web3-react'
 
 const useStyles = makeStyles(theme => ({
   button: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(3, 0, 2)
   }
 }))
 
-export default function ({ onLogin }) {
+export default function ({ onLogin, connector }) {
   const classes = useStyles()
-
+  const { error, active, account, setConnector } = useWeb3Context()
+  const [isLoading, setIsLoading] = useState(false)
   const [state, setState] = useState({
     snackMessage: '',
     isSnackOpen: false
   })
 
   const { isSnackOpen, snackMessage } = state
+  savePBKey(account)
 
-  async function handleMetaMaskSignIn () {
-    // if (!window.web3 || !window.web3.eth.accounts[0] === undefined) {
-    //   setState({ isSnackOpen: true, snackMessage: 'Please sign in to MetaMask.' })
-    //   return
-    // }
+  useEffect(() => {
+    if (!active && !error) {
+    } else if (error) {
+      setIsLoading(false)
+      setState({ snackMessage: error })
+    } else {
+      savePBKey(account)
+      setIsLoading(false)
+    }
+  }, [active, error, account])
 
-    // TODO: remove after debug
-    const today = new Date()
-    const dd = String(today.getDate()).padStart(2, '0')
-    const mm = String(today.getMonth() + 1).padStart(2, '0')
-    const yyyy = today.getFullYear()
-
+  async function savePBKey (pbkey) {
     try {
-      const pbkey = `${mm}/${dd}/${yyyy}`
       await api.post('/api/accounts', { pbkey })
 
-      onLogin(pbkey)
+      onLogin()
     } catch (e) {
-      setState({ isSnackOpen: true, snackMessage: e })
+      setState({ snackMessage: e })
     }
+  }
+
+  function handleClick () {
+    setIsLoading(true)
+    setConnector(connector)
   }
 
   return (
@@ -50,9 +57,9 @@ export default function ({ onLogin }) {
         variant="contained"
         color="primary"
         className={classes.button}
-        onClick={handleMetaMaskSignIn}
+        onClick={handleClick}
       >
-        Sign In with MetaMask
+        {isLoading ? 'Loading...' : `Sign In with ${connector}`}
       </Button>
 
       <SignInSnack

@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import OriginSelect from './OriginSelect'
 import api from '../../helpers/api'
+import { addApp } from '../../helpers/deveryHelper'
 import { SignInSnack } from '../shared/Snacks'
 
 const useStyles = makeStyles(theme => ({
@@ -47,7 +48,7 @@ export default function ({ history }) {
 
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
-  const [brandName, setBrandName] = useState('')
+  const [appName, setAppName] = useState('')
   const [origin, setOrigin] = useState('')
 
   const { snackMessage, isSnackOpen } = snackState
@@ -60,13 +61,15 @@ export default function ({ history }) {
         origin,
         firstName,
         lastName,
-        brandName
+        appName
       })
 
       if (!success) {
         setSnackState({ isSnackOpen: true, snackMessage: error.type })
         return
       }
+
+      await addApp(appName)
 
       history.push('/forms')
     } catch (e) {
@@ -118,10 +121,10 @@ export default function ({ history }) {
                 variant="outlined"
                 required
                 fullWidth
-                id="brandName"
-                label="Brand Name"
-                name="brandName"
-                onChange={e => setBrandName(e.target.value)}
+                id="appName"
+                label="App Name"
+                name="appName"
+                onChange={e => setAppName(e.target.value)}
               />
             </Grid>
           </Grid>

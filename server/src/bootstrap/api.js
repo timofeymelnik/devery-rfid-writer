@@ -5,7 +5,7 @@ import { sendSuccessMiddleware } from '../middleware/sendSuccess'
 import accountRoutes from '../api/account.routes'
 import formsRoutes from '../api/forms.routes'
 import itemsRoutes from '../api/items.routes'
-import deveryRoutes from '../api/devery.routes'
+import utilsRoutes from '../api/utils.routes'
 
 // import { debugRequestMiddleware } from '../middleware/debugRequest'
 
@@ -21,7 +21,7 @@ export function API () {
   api.use('/accounts', accountRoutes)
   api.use('/forms', formsRoutes)
   api.use('/items', itemsRoutes)
-  api.use('/devery', deveryRoutes)
+  api.use('/utils', utilsRoutes)
 
   return api
 }

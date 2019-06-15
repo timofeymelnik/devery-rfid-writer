@@ -48,7 +48,7 @@ export default function ({ match }) {
           <Loader
             component={ItemsList}
             initialState={items}
-            url={'/api/items'}
+            url={`/api/items/${formId}`}
             selectedItem={selectedItem}
             setSelectedItem={setSelectedItem} />
           <div className={classes.toolbar} />
@@ -57,7 +57,7 @@ export default function ({ match }) {
 
       <Fab color="primary" aria-label="Add" variant="extended" className={classes.fab} onClick={handleMarkItems}>
         <LabelIcon />
-        Mark Items
+        Add Product
       </Fab>
 
       <SignItems onClose={handleModalClose} isOpen={isModalOpen} />

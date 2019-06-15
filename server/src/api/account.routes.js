@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { checkBody, validate } from '../middleware/validation'
-import { createAccount, updateAccount } from '../controllers/account.controller'
+import { createAccount, getAccountData, updateAccount } from '../controllers/account.controller'
 import { WRONG_REQUEST } from '../constants/errors'
 import { verifyJWT } from '../middleware/verification'
 
@@ -32,13 +32,19 @@ router.post(
 router.put(
   '/',
   validate([
-    checkBody(['firstName', 'lastName', 'origin', 'brandName'], WRONG_REQUEST)
+    checkBody(['firstName', 'lastName', 'origin', 'appName'], WRONG_REQUEST)
       .exists()
       .not()
       .isEmpty()
   ]),
   verifyJWT,
   updateAccount
+)
+
+router.get(
+  '/',
+  verifyJWT,
+  getAccountData
 )
 
 export default router

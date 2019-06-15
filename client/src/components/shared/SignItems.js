@@ -12,7 +12,7 @@ import isUndefined from 'lodash/isUndefined'
 import findIndex from 'lodash/findIndex'
 import { makeStyles } from '@material-ui/core'
 import { useStateValue } from '../app/AppContext'
-import devery, { utils } from '../../helpers/deveryHelper'
+import { addProduct } from '../../helpers/deveryHelper'
 import api from '../../helpers/api'
 
 const useStyles = makeStyles(theme => ({
@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function ({ isOpen, onClose }) {
   const classes = useStyles()
-  const [{ items, forms }, dispatch] = useStateValue()
+  const [{ items }, dispatch] = useStateValue()
 
   function handleClose () {
     onClose(false)
@@ -58,7 +58,9 @@ export default function ({ isOpen, onClose }) {
       try {
         const { _id } = item
 
-        item.address = utils.getRandomAddress()
+        const { hash } = await addProduct(_id)
+
+        item.address = hash
 
         const { error, success } = await api.put(`/api/items/${_id}`, { data: item })
 
@@ -69,10 +71,7 @@ export default function ({ isOpen, onClose }) {
             payload: { data: item, itemIndex: findIndex(items, { _id }) }
           })
 
-          const { address: productAddress } = findIndex(forms, { _id: item.formId })
-
-          const hash = await devery.addressHash(item)
-          acc.push(await devery.mark(productAddress, hash))
+          acc.push(Promise.resolve(hash))
 
           return acc
         }
@@ -86,7 +85,7 @@ export default function ({ isOpen, onClose }) {
     const hashes = await Promise.all(generateHashes())
     forEach(hashes, async hash => {
       try {
-        const response = await fetch(`/api/devery/rfid/${hash}`)
+        const response = await fetch(`/api/utils/rfid/${hash}`)
         download(response.blob(), `${hash}.txt`)
       } catch (e) {
         console.error(e)

@@ -26,7 +26,6 @@ db.defaults({
   users: [],
   forms: [],
   items: [],
-  app: {}
 }).write()
 
 export default db
@@ -34,4 +33,3 @@ export default db
 export const Users = db.get('users')
 export const Forms = db.get('forms')
 export const Items = db.get('items')
-export const App = db.get('app')

@@ -1,4 +1,5 @@
 import { decode } from 'jwt-simple'
+import { utils } from './deveryHelper'
 
 const TOKEN = 'id_token'
 
@@ -10,6 +11,16 @@ class Auth {
       console.error(err)
       return false
     }
+  }
+
+  getAddress = () => {
+    const { pbkey } = this.decodeToken()
+    return pbkey
+  }
+
+  isAddressValid = () => {
+    if (!this.isTokenValid()) return false
+    return utils.isAddress(this.getAddress())
   }
 
   isTokenValid = () => {

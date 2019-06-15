@@ -43,7 +43,7 @@ export default function ({ handleSelectForm }) {
       >
         <div className={classes.toolbar} />
         <Button color='primary' size="large" onClick={() => setIsModalOpen(true)}>
-          Add Product
+          Add Brand
         </Button>
         <Divider />
         <List>

@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import api from '../../helpers/api'
+import { addBrand } from '../../helpers/deveryHelper'
 import { useStateValue } from '../app/AppContext'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -22,6 +23,8 @@ export default function ({ isOpen, onClose, canClose = true }) {
       if (!success) return
 
       dispatch({ type: 'forms@add', payload: { data } })
+
+      await addBrand(name)
     }
 
     onClose(false)
@@ -42,13 +45,13 @@ export default function ({ isOpen, onClose, canClose = true }) {
     <Fragment>
       <Dialog maxWidth='xs' fullWidth open={isOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
         <form onSubmit={handleSubmit}>
-          <DialogTitle id="form-dialog-title">Add product</DialogTitle>
+          <DialogTitle id="form-dialog-title">Set Brand Name</DialogTitle>
           <DialogContent>
             <TextField
               autoFocus
               margin="dense"
               id="name"
-              label="Product Name"
+              label="Brand Name"
               type="text"
               fullWidth
               onChange={e => setValue(e.target.value)}
