@@ -14,7 +14,7 @@
     "downshift": "^3.2.10",
     "ethers": "^4.0.30",
     "jwt-simple": "^0.5.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "react": "^16.8.6",
     "react-app-polyfill": "^1.0.1",
     "react-dom": "^16.8.6",
